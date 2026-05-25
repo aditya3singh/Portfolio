@@ -1,0 +1,15 @@
+<div
+  class="max-w-container-max mx-auto px-margin-mobile lg:px-gutter py-8 lg:py-16 flex flex-col lg:flex-row gap-gutter min-h-screen"
+>
+  <app-sidebar />
+  <main
+    class="flex-1 min-w-0 bg-surface-container border border-outline-variant rounded-3xl relative overflow-hidden flex flex-col pb-20 lg:pb-0"
+  >
+    <app-top-nav />
+    <div class="flex-1">
+      <router-outlet />
+    </div>
+    <app-footer />
+  </main>
+</div>
+<app-mobile-nav />

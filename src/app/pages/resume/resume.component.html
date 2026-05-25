@@ -1,0 +1,141 @@
+<div class="p-gutter flex flex-col gap-12">
+  <header>
+    <h2
+      class="font-headline-lg text-headline-lg text-on-surface mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-12 after:h-1.5 after:bg-primary after:rounded-full"
+    >
+      Resume
+    </h2>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-gap mt-4">
+    <section>
+      <div class="flex items-center gap-4 mb-8">
+        <div
+          class="w-10 h-10 rounded-xl bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-primary"
+        >
+          <span class="material-symbols-outlined">school</span>
+        </div>
+        <h3 class="font-headline-sm text-headline-sm text-on-surface">Education</h3>
+      </div>
+      <div class="pl-8 relative flex flex-col gap-10">
+        @for (item of education; track item.title) {
+          <article class="timeline-item relative">
+            <h4 class="font-body-lg text-body-lg text-on-surface font-bold mb-1">{{ item.title }}</h4>
+            @if (item.subtitle) {
+              <p class="font-body-md text-body-md text-on-surface mb-1">{{ item.subtitle }}</p>
+            }
+            <span class="font-label-md text-label-md text-primary block mb-3">{{ item.period }}</span>
+            <p class="font-body-md text-body-md text-on-surface-variant">{{ item.description }}</p>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section>
+      <div class="flex items-center gap-4 mb-8">
+        <div
+          class="w-10 h-10 rounded-xl bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-primary"
+        >
+          <span class="material-symbols-outlined">work</span>
+        </div>
+        <h3 class="font-headline-sm text-headline-sm text-on-surface">Experience</h3>
+      </div>
+      <div class="pl-8 relative flex flex-col gap-10">
+        @for (item of experience; track item.title) {
+          <article class="timeline-item relative">
+            <h4 class="font-body-lg text-body-lg text-on-surface font-bold mb-1">{{ item.title }}</h4>
+            @if (item.subtitle) {
+              <p class="font-body-md text-body-md text-primary/90 mb-1">{{ item.subtitle }}</p>
+            }
+            <span class="font-label-md text-label-md text-primary block mb-3">{{ item.period }}</span>
+            <p class="font-body-md text-body-md text-on-surface-variant">{{ item.description }}</p>
+          </article>
+        }
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="w-10 h-10 rounded-xl bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-primary"
+      >
+        <span class="material-symbols-outlined">verified</span>
+      </div>
+      <h3 class="font-headline-sm text-headline-sm text-on-surface">Certificates</h3>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      @for (cert of certificates; track cert.title) {
+        <div
+          class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-5 hover:border-primary/30 transition-all"
+        >
+          <h4 class="font-body-lg text-on-surface font-bold">{{ cert.title }}</h4>
+          <p class="font-label-md text-primary mt-1">{{ cert.issuer }}</p>
+          <p class="font-body-md text-on-surface-variant mt-2">{{ cert.date }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="mt-4" #skillsSection>
+    <h3 class="font-headline-sm text-headline-sm text-on-surface mb-8">My Skills</h3>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-stack-gap bg-surface-container-lowest p-stack-gap rounded-xl border border-outline-variant/20"
+    >
+      @for (skill of skills; track skill.name) {
+        <div class="flex flex-col gap-3">
+          <div class="flex justify-between items-end">
+            <span class="font-body-lg text-body-lg text-on-surface font-bold">{{ skill.name }}</span>
+            <span class="font-label-md text-label-md text-on-surface-variant">{{ skill.percent }}%</span>
+          </div>
+          <div class="skill-progress-bg w-full">
+            <div
+              class="skill-progress-fill"
+              [attr.data-width]="skill.percent + '%'"
+              [style.width]="skill.percent + '%'"
+            ></div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="mt-8 space-y-4">
+      <p class="font-body-md text-on-surface-variant">
+        <span class="text-on-surface font-semibold">Languages:</span> {{ languages }}
+      </p>
+      <p class="font-body-md text-on-surface-variant">
+        <span class="text-on-surface font-semibold">Focus:</span> {{ softSkills }}
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-3 mt-8">
+      @for (tech of techStack; track tech) {
+        <span
+          class="px-5 py-2.5 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant text-xs uppercase tracking-widest font-bold hover:border-primary hover:text-primary cursor-default transition-all duration-300"
+          >{{ tech }}</span
+        >
+      }
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-outline-variant/30">
+      <h4 class="font-headline-sm text-headline-sm text-on-surface mb-6">
+        IFMS — Skills from system documentation
+      </h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for (group of ifmsSkillGroups; track group.label) {
+          <div class="rounded-xl bg-surface-container-low p-4 border border-outline-variant/20">
+            <p class="font-label-md text-primary mb-3">{{ group.label }}</p>
+            <div class="flex flex-wrap gap-2">
+              @for (item of group.items; track item) {
+                <span
+                  class="px-3 py-1 rounded-lg bg-surface-container-highest text-on-surface-variant text-xs border border-outline-variant/30"
+                  >{{ item }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</div>

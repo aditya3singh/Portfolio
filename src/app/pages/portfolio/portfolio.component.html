@@ -1,0 +1,253 @@
+<div class="p-margin-mobile lg:p-12">
+  <div class="mb-10">
+    <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Portfolio</h2>
+    <div class="w-12 h-1 bg-primary rounded-full"></div>
+  </div>
+
+  <div class="flex flex-wrap gap-4 mb-10">
+    @for (f of filters; track f.key) {
+      <button
+        type="button"
+        class="px-5 py-2 rounded-lg font-body-md text-body-md transition-all duration-300"
+        [class.bg-primary-container]="activeFilter === f.key"
+        [class.text-white]="activeFilter === f.key"
+        [class.shadow-sm]="activeFilter === f.key"
+        [class.font-bold]="activeFilter === f.key"
+        [class.text-on-surface-variant]="activeFilter !== f.key"
+        [class.hover:bg-surface-variant]="activeFilter !== f.key"
+        (click)="setFilter(f.key)"
+      >
+        {{ f.label }}
+      </button>
+    }
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    @for (project of projects; track project.title) {
+      @if (isVisible(project)) {
+        <div
+          class="project-card group cursor-pointer transition-all duration-300"
+          (click)="openProject(project)"
+          (keyup.enter)="openProject(project)"
+          tabindex="0"
+          role="button"
+        >
+          <div class="relative rounded-lg overflow-hidden aspect-[4/3] bg-surface-container-highest mb-4">
+            <img
+              [alt]="project.isIfms ? ifmsImage.alt : project.title"
+              class="project-image w-full h-full object-cover transition-transform duration-700 ease-out"
+              [src]="project.image"
+            />
+            @if (project.featured) {
+              <span
+                class="absolute top-3 left-3 bg-primary text-on-primary px-2 py-1 rounded text-[10px] font-bold uppercase"
+                >Featured</span
+              >
+            }
+            @if (project.isIfms) {
+              <span
+                class="absolute top-3 right-3 bg-secondary text-on-surface px-2 py-1 rounded text-[10px] font-bold uppercase opacity-90"
+                >Case Study</span
+              >
+            }
+            <div
+              class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            ></div>
+            <div
+              class="overlay-icon absolute top-1/2 left-1/2 opacity-0 scale-75 transition-all duration-300 bg-primary text-on-primary p-3 rounded-lg shadow-xl"
+            >
+              <span class="material-symbols-outlined">info</span>
+            </div>
+          </div>
+          <h3
+            class="font-headline-sm text-on-surface text-[18px] mb-1 group-hover:text-primary transition-colors"
+          >
+            {{ project.title }}
+          </h3>
+          <p class="font-body-md text-body-md text-on-surface-variant">{{ project.category }}</p>
+          <p class="font-label-md text-primary mt-1">{{ project.period }}</p>
+        </div>
+      }
+    }
+  </div>
+
+  @if (selectedProject) {
+    <div
+      class="mt-10 p-6 lg:p-8 rounded-xl border border-outline-variant bg-surface-container-low space-y-8"
+    >
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface">{{ selectedProject.title }}</h3>
+          <p class="font-label-md text-primary mt-1">{{ selectedProject.techStack }}</p>
+          @if (selectedProject.isIfms) {
+            <p class="font-body-md text-on-surface-variant mt-2">
+              {{ ifmsMeta.role }} · {{ ifmsMeta.architecture }}
+            </p>
+          }
+        </div>
+        <div class="flex flex-wrap gap-3 shrink-0">
+          @if (selectedProject.github) {
+            <a
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-primary text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all"
+              [href]="selectedProject.github"
+              target="_blank"
+              rel="noopener noreferrer"
+              (click)="$event.stopPropagation()"
+            >
+              <span class="material-symbols-outlined text-[18px]">code</span>
+              {{ selectedProject.githubRepo || 'View on GitHub' }}
+            </a>
+          } @else {
+            <a
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-outline-variant text-on-surface-variant font-label-md hover:text-primary transition-all"
+              href="https://github.com/aditya3singh?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+              (click)="$event.stopPropagation()"
+            >
+              <span class="material-symbols-outlined text-[18px]">folder_open</span>
+              All repositories
+            </a>
+          }
+        </div>
+      </div>
+
+      @if (selectedProject.isIfms) {
+        <div class="rounded-xl overflow-hidden border border-outline-variant/30 mb-4 max-h-80">
+          <img
+            class="w-full h-full object-cover max-h-80"
+            [src]="ifmsImage.url"
+            [alt]="ifmsImage.alt"
+          />
+        </div>
+      }
+
+      <p class="font-body-md text-on-surface-variant">{{ selectedProject.description }}</p>
+
+      <div>
+        <h4 class="font-headline-sm text-on-surface mb-3">Key highlights</h4>
+        <ul class="list-disc pl-5 space-y-2">
+          @for (point of selectedProject.highlights; track point) {
+            <li class="font-body-md text-on-surface-variant">{{ point }}</li>
+          }
+        </ul>
+      </div>
+
+      @if (selectedProject.isIfms) {
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="rounded-xl bg-surface-container-lowest p-4 border border-outline-variant/30">
+            <p class="font-label-md text-on-surface-variant uppercase text-[11px]">Scale</p>
+            <p class="font-headline-sm text-on-surface mt-1">~90,000</p>
+            <p class="font-body-md text-on-surface-variant text-sm">petrol stations (India)</p>
+          </div>
+          <div class="rounded-xl bg-surface-container-lowest p-4 border border-outline-variant/30">
+            <p class="font-label-md text-on-surface-variant uppercase text-[11px]">Services</p>
+            <p class="font-headline-sm text-on-surface mt-1">7</p>
+            <p class="font-body-md text-on-surface-variant text-sm">microservices + Ocelot GW</p>
+          </div>
+          <div class="rounded-xl bg-surface-container-lowest p-4 border border-outline-variant/30">
+            <p class="font-label-md text-on-surface-variant uppercase text-[11px]">Databases</p>
+            <p class="font-headline-sm text-on-surface mt-1">4+</p>
+            <p class="font-body-md text-on-surface-variant text-sm">SQL Server DB-per-service</p>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-headline-sm text-on-surface mb-4">Microservices &amp; databases</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm border border-outline-variant/30 rounded-xl overflow-hidden">
+              <thead class="bg-surface-container-highest">
+                <tr>
+                  <th class="p-3 font-label-md text-on-surface-variant">Service</th>
+                  <th class="p-3 font-label-md text-on-surface-variant">Port</th>
+                  <th class="p-3 font-label-md text-on-surface-variant">Database</th>
+                  <th class="p-3 font-label-md text-on-surface-variant">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (svc of ifmsServices; track svc.name) {
+                  <tr class="border-t border-outline-variant/20">
+                    <td class="p-3 font-body-md text-on-surface">{{ svc.name }}</td>
+                    <td class="p-3 font-body-md text-primary">{{ svc.port }}</td>
+                    <td class="p-3 font-body-md text-on-surface-variant">{{ svc.db }}</td>
+                    <td class="p-3">
+                      <span
+                        class="px-2 py-0.5 rounded text-xs font-bold"
+                        [ngClass]="
+                          svc.status === 'Built'
+                            ? 'bg-primary-container text-on-primary'
+                            : 'bg-surface-variant text-tertiary'
+                        "
+                        >{{ svc.status }}</span
+                      >
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-headline-sm text-on-surface mb-4">Problem → solution map</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            @for (row of ifmsProblems; track row.pain) {
+              <div
+                class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/20"
+              >
+                <p class="font-body-md text-on-surface font-semibold text-sm">{{ row.pain }}</p>
+                <p class="font-label-md text-primary mt-2">{{ row.module }}</p>
+                <p class="font-body-md text-on-surface-variant text-sm mt-1">{{ row.fix }}</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-headline-sm text-on-surface mb-4">Business impact</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm border border-outline-variant/30 rounded-xl overflow-hidden">
+              <thead class="bg-surface-container-highest">
+                <tr>
+                  <th class="p-3 font-label-md text-on-surface-variant">Metric</th>
+                  <th class="p-3 font-label-md text-on-surface-variant">Before</th>
+                  <th class="p-3 font-label-md text-on-surface-variant">After IFMS</th>
+                  <th class="p-3 font-label-md text-on-surface-variant">Improvement</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of ifmsImpact; track row.metric) {
+                  <tr class="border-t border-outline-variant/20">
+                    <td class="p-3 font-body-md text-on-surface">{{ row.metric }}</td>
+                    <td class="p-3 font-body-md text-on-surface-variant">{{ row.before }}</td>
+                    <td class="p-3 font-body-md text-primary">{{ row.after }}</td>
+                    <td class="p-3 font-body-md text-on-surface-variant">{{ row.improvement }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-headline-sm text-on-surface mb-4">IFMS tech stack (from documentation)</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (group of ifmsSkillGroups; track group.label) {
+              <div class="rounded-xl border border-outline-variant/20 p-4 bg-surface-container-lowest">
+                <p class="font-label-md text-primary mb-2">{{ group.label }}</p>
+                <div class="flex flex-wrap gap-2">
+                  @for (skill of group.items; track skill) {
+                    <span
+                      class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant text-xs border border-outline-variant/30"
+                      >{{ skill }}</span
+                    >
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

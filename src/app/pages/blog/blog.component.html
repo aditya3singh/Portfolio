@@ -1,0 +1,55 @@
+<div class="p-8 lg:p-10 pb-12">
+  <header class="mb-10 relative">
+    <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Project Insights</h2>
+    <div class="w-16 h-1 bg-primary rounded-full"></div>
+    <p class="font-body-md text-on-surface-variant mt-4 max-w-2xl">
+      Notes on architecture, backend performance, and full stack patterns from my projects — including IFMS.
+    </p>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-gap">
+    @for (post of posts; track post.title) {
+      <article
+        class="group cursor-default transition-transform"
+        [class.md:col-span-2]="post.featured"
+      >
+        <div
+          class="relative rounded-xl overflow-hidden mb-4 bg-surface-container-highest border border-white/5"
+          [ngClass]="post.featured ? 'aspect-[16/9] lg:aspect-[21/9]' : 'aspect-[4/3]'"
+        >
+          <img
+            [alt]="post.title"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            [src]="post.image"
+          />
+          @if (post.featured) {
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/90 via-transparent to-transparent opacity-60"
+            ></div>
+            <span
+              class="absolute top-6 left-6 bg-primary text-on-primary px-3 py-1 rounded-lg font-label-md text-[10px] font-bold uppercase tracking-widest shadow-lg"
+              >Featured</span
+            >
+          }
+        </div>
+        <div class="px-2">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="font-label-md text-primary font-semibold">{{ post.category }}</span>
+            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+            <time class="font-label-md text-on-surface-variant opacity-80">{{ post.date }}</time>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2 md:mb-3">
+            {{ post.title }}
+          </h3>
+          <p
+            class="font-body-md text-body-md text-on-surface-variant"
+            [class.line-clamp-2]="!post.featured"
+            [class.max-w-3xl]="post.featured"
+          >
+            {{ post.excerpt }}
+          </p>
+        </div>
+      </article>
+    }
+  </div>
+</div>
