@@ -19,7 +19,7 @@
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
         [src]="mapUrl"
-        title="Map of Sacramento, CA"
+        title="Map of Phagwara, Punjab"
         (load)="onMapLoad()"
       ></iframe>
     </div>
@@ -50,13 +50,21 @@
           rows="5"
         ></textarea>
       </div>
+      @if (errorMessage) {
+        <div
+          class="md:col-span-2 p-4 rounded-xl border border-red-500/40 bg-red-500/10 text-on-surface"
+        >
+          <p class="font-body-md text-body-md">{{ errorMessage }}</p>
+        </div>
+      }
+
       <div class="md:col-span-2 flex justify-end mt-2">
         <button
           type="submit"
           class="group flex items-center gap-2 px-10 py-4 rounded-xl font-label-md font-bold shadow-lg transition-all duration-300 active:scale-95 disabled:opacity-80"
           [ngClass]="{
             'bg-primary text-on-primary shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02]':
-              submitState === 'idle',
+              submitState === 'idle' || submitState === 'error',
             'bg-green-500 text-white': submitState === 'sent'
           }"
           [disabled]="submitState === 'sending'"
@@ -67,6 +75,9 @@
           } @else if (submitState === 'sent') {
             <span class="material-symbols-outlined text-[20px]">check_circle</span>
             Message Sent!
+          } @else if (submitState === 'error') {
+            <span class="material-symbols-outlined text-[20px]">error</span>
+            Try Again
           } @else {
             <span class="material-symbols-outlined text-[20px]">send</span>
             Send Message
